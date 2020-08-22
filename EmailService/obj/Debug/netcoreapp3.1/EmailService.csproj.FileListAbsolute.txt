@@ -1,0 +1,9 @@
+C:\dev\TeleDoc\EmailService\bin\Debug\netcoreapp3.1\EmailService.deps.json
+C:\dev\TeleDoc\EmailService\bin\Debug\netcoreapp3.1\EmailService.dll
+C:\dev\TeleDoc\EmailService\bin\Debug\netcoreapp3.1\EmailService.pdb
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfoInputs.cache
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfo.cs
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.csproj.CoreCompileInputs.cache
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.dll
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.pdb
+C:\dev\TeleDoc\EmailService\obj\Debug\netcoreapp3.1\EmailService.csprojAssemblyReference.cache

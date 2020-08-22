@@ -1,0 +1,17 @@
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Contracts.deps.json
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Contracts.runtimeconfig.json
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Contracts.runtimeconfig.dev.json
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Contracts.dll
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Contracts.pdb
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\EmailService.dll
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Entities.dll
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\EmailService.pdb
+C:\dev\TeleDoc\Contracts\bin\Debug\netcoreapp3.1\Entities.pdb
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.csprojAssemblyReference.cache
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.AssemblyInfoInputs.cache
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.AssemblyInfo.cs
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.csproj.CoreCompileInputs.cache
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.csproj.CopyComplete
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.dll
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.pdb
+C:\dev\TeleDoc\Contracts\obj\Debug\netcoreapp3.1\Contracts.genruntimeconfig.cache
