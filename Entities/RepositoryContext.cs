@@ -10,6 +10,8 @@ namespace Entities
         public RepositoryContext(DbContextOptions options) : base(options) { }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -50,7 +52,8 @@ namespace Entities
                 entity.ToTable("usertokens");
             });
 
-            builder.ApplyConfiguration(new RoleConfiguration());  
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new AppointmentConfiguration());
         }
     }
 }

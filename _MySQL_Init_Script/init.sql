@@ -16,6 +16,92 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `__efmigrationshistory`
+--
+
+DROP TABLE IF EXISTS `__efmigrationshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `__efmigrationshistory` (
+  `MigrationId` varchar(95) NOT NULL,
+  `ProductVersion` varchar(32) NOT NULL,
+  PRIMARY KEY (`MigrationId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `__efmigrationshistory`
+--
+
+LOCK TABLES `__efmigrationshistory` WRITE;
+/*!40000 ALTER TABLE `__efmigrationshistory` DISABLE KEYS */;
+INSERT INTO `__efmigrationshistory` VALUES ('20201027195436_InitialDb','3.1.6');
+/*!40000 ALTER TABLE `__efmigrationshistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `appointments`
+--
+
+DROP TABLE IF EXISTS `appointments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appointments` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Date` datetime(6) NOT NULL,
+  `StartTime` time(6) NOT NULL,
+  `EndTime` time(6) NOT NULL,
+  `Duration` int NOT NULL,
+  `Summary` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `PatientId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `DoctorId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `StatusId` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Appointments_DoctorId` (`DoctorId`),
+  KEY `IX_Appointments_PatientId` (`PatientId`),
+  KEY `IX_Appointments_StatusId` (`StatusId`),
+  CONSTRAINT `FK_Appointments_AppointmentStatus_StatusId` FOREIGN KEY (`StatusId`) REFERENCES `appointmentstatus` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_Appointments_doctors_DoctorId` FOREIGN KEY (`DoctorId`) REFERENCES `doctors` (`Id`) ON DELETE RESTRICT,
+  CONSTRAINT `FK_Appointments_patients_PatientId` FOREIGN KEY (`PatientId`) REFERENCES `patients` (`Id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointments`
+--
+
+LOCK TABLES `appointments` WRITE;
+/*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `appointmentstatus`
+--
+
+DROP TABLE IF EXISTS `appointmentstatus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appointmentstatus` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointmentstatus`
+--
+
+LOCK TABLES `appointmentstatus` WRITE;
+/*!40000 ALTER TABLE `appointmentstatus` DISABLE KEYS */;
+INSERT INTO `appointmentstatus` VALUES (1,'Request','Req'),(2,'Accept','Acc'),(3,'Cancel','Can');
+/*!40000 ALTER TABLE `appointmentstatus` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `doctors`
 --
 
@@ -28,9 +114,18 @@ CREATE TABLE `doctors` (
   `Sn` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `References` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK_Doctors_Users_Id` FOREIGN KEY (`Id`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_doctors_users_Id` FOREIGN KEY (`Id`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `doctors`
+--
+
+LOCK TABLES `doctors` WRITE;
+/*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `patients`
@@ -48,9 +143,18 @@ CREATE TABLE `patients` (
   `DateOfBirth` datetime(6) NOT NULL,
   `BloodType` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK_Patients_Users_Id` FOREIGN KEY (`Id`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_patients_users_Id` FOREIGN KEY (`Id`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patients`
+--
+
+LOCK TABLES `patients` WRITE;
+/*!40000 ALTER TABLE `patients` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patients` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `roleclaims`
@@ -65,11 +169,19 @@ CREATE TABLE `roleclaims` (
   `ClaimType` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `ClaimValue` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`Id`),
-  KEY `IX_RoleClaims_RoleId` (`RoleId`),
-  CONSTRAINT `FK_RoleClaims_Roles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `roles` (`Id`) ON DELETE CASCADE
+  KEY `IX_roleclaims_RoleId` (`RoleId`),
+  CONSTRAINT `FK_roleclaims_roles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `roles` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `roleclaims`
+--
+
+LOCK TABLES `roleclaims` WRITE;
+/*!40000 ALTER TABLE `roleclaims` DISABLE KEYS */;
+/*!40000 ALTER TABLE `roleclaims` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -94,7 +206,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES ('6dd1ae7d-e6e7-4319-8bfc-6d6250bd6389','Patient','PATIENT','5173b13f-f636-4e6e-9c0f-939663589ce6'),('fb60fafa-ef75-4ac8-bdfc-31b94bd3a805','Doctor','DOCTOR','0f790e74-9106-4fba-b395-eda5396ea318');
+INSERT INTO `roles` VALUES ('580f11fe-b3ff-41fe-932b-39aaef187b63','Patient','PATIENT','db00deda-b709-44fc-8c23-b9be740c053c'),('c95c1062-1a2a-4ea1-96c2-5291e8590b65','Doctor','DOCTOR','a88c0be1-9a1e-46b6-9358-318f1a4e0712');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,10 +223,19 @@ CREATE TABLE `userclaims` (
   `ClaimType` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `ClaimValue` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`Id`),
-  KEY `IX_UserClaims_UserId` (`UserId`),
-  CONSTRAINT `FK_UserClaims_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  KEY `IX_userclaims_UserId` (`UserId`),
+  CONSTRAINT `FK_userclaims_users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userclaims`
+--
+
+LOCK TABLES `userclaims` WRITE;
+/*!40000 ALTER TABLE `userclaims` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userclaims` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `userlogins`
@@ -129,10 +250,19 @@ CREATE TABLE `userlogins` (
   `ProviderDisplayName` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `UserId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`LoginProvider`,`ProviderKey`),
-  KEY `IX_UserLogins_UserId` (`UserId`),
-  CONSTRAINT `FK_UserLogins_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  KEY `IX_userlogins_UserId` (`UserId`),
+  CONSTRAINT `FK_userlogins_users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userlogins`
+--
+
+LOCK TABLES `userlogins` WRITE;
+/*!40000 ALTER TABLE `userlogins` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userlogins` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `userroles`
@@ -145,11 +275,20 @@ CREATE TABLE `userroles` (
   `UserId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `RoleId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`UserId`,`RoleId`),
-  KEY `IX_UserRoles_RoleId` (`RoleId`),
-  CONSTRAINT `FK_UserRoles_Roles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `roles` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UserRoles_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  KEY `IX_userroles_RoleId` (`RoleId`),
+  CONSTRAINT `FK_userroles_roles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `roles` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_userroles_users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userroles`
+--
+
+LOCK TABLES `userroles` WRITE;
+/*!40000 ALTER TABLE `userroles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userroles` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -188,6 +327,15 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usertokens`
 --
 
@@ -200,10 +348,19 @@ CREATE TABLE `usertokens` (
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`UserId`,`LoginProvider`,`Name`),
-  CONSTRAINT `FK_UserTokens_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_usertokens_users_UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `usertokens`
+--
+
+LOCK TABLES `usertokens` WRITE;
+/*!40000 ALTER TABLE `usertokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usertokens` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -213,4 +370,4 @@ CREATE TABLE `usertokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-18 23:04:12
+-- Dump completed on 2020-11-21 18:41:42

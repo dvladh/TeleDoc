@@ -4,12 +4,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeleDocServer.Migrations
 {
-    public partial class InitialDbScript : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "AppointmentStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "roles",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -19,11 +33,11 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -51,11 +65,11 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleClaims",
+                name: "roleclaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -66,17 +80,17 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_roleclaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleClaims_Roles_RoleId",
+                        name: "FK_roleclaims_roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Doctors",
+                name: "doctors",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -86,40 +100,40 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doctors", x => x.Id);
+                    table.PrimaryKey("PK_doctors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Doctors_Users_Id",
+                        name: "FK_doctors_users_Id",
                         column: x => x.Id,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "patients",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     Age = table.Column<int>(nullable: false),
                     Sex = table.Column<string>(nullable: false),
-                    Height = table.Column<decimal>(nullable: false),
-                    Weight = table.Column<decimal>(nullable: false),
+                    Height = table.Column<decimal>(type: "decimal(16, 2)", nullable: false),
+                    Weight = table.Column<decimal>(type: "decimal(16, 2)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     BloodType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_patients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Patients_Users_Id",
+                        name: "FK_patients_users_Id",
                         column: x => x.Id,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserClaims",
+                name: "userclaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -130,17 +144,17 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.PrimaryKey("PK_userclaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserId",
+                        name: "FK_userclaims_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserLogins",
+                name: "userlogins",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
@@ -150,17 +164,17 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_userlogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_UserLogins_Users_UserId",
+                        name: "FK_userlogins_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "userroles",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -168,23 +182,23 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_userroles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
+                        name: "FK_userroles_roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
+                        name: "FK_userroles_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTokens",
+                name: "usertokens",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -194,49 +208,122 @@ namespace TeleDocServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_usertokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_UserTokens_Users_UserId",
+                        name: "FK_usertokens_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    StartTime = table.Column<TimeSpan>(nullable: false),
+                    EndTime = table.Column<TimeSpan>(nullable: false),
+                    Duration = table.Column<int>(nullable: false),
+                    Summary = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    PatientId = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<string>(nullable: true),
+                    StatusId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AppointmentStatus_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "AppointmentStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AppointmentStatus",
+                columns: new[] { "Id", "Code", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Req", "Request" },
+                    { 2, "Acc", "Accept" },
+                    { 3, "Can", "Cancel" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "580f11fe-b3ff-41fe-932b-39aaef187b63", "db00deda-b709-44fc-8c23-b9be740c053c", "Patient", "PATIENT" },
+                    { "c95c1062-1a2a-4ea1-96c2-5291e8590b65", "a88c0be1-9a1e-46b6-9358-318f1a4e0712", "Doctor", "DOCTOR" }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_RoleClaims_RoleId",
-                table: "RoleClaims",
+                name: "IX_Appointments_DoctorId",
+                table: "Appointments",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_StatusId",
+                table: "Appointments",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_roleclaims_RoleId",
+                table: "roleclaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "Roles",
+                table: "roles",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_UserId",
-                table: "UserClaims",
+                name: "IX_userclaims_UserId",
+                table: "userclaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLogins_UserId",
-                table: "UserLogins",
+                name: "IX_userlogins_UserId",
+                table: "userlogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_RoleId",
-                table: "UserRoles",
+                name: "IX_userroles_RoleId",
+                table: "userroles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "Users",
+                table: "users",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "Users",
+                table: "users",
                 column: "NormalizedUserName",
                 unique: true);
         }
@@ -244,31 +331,37 @@ namespace TeleDocServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Doctors");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "roleclaims");
 
             migrationBuilder.DropTable(
-                name: "RoleClaims");
+                name: "userclaims");
 
             migrationBuilder.DropTable(
-                name: "UserClaims");
+                name: "userlogins");
 
             migrationBuilder.DropTable(
-                name: "UserLogins");
+                name: "userroles");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "usertokens");
 
             migrationBuilder.DropTable(
-                name: "UserTokens");
+                name: "doctors");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "patients");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "AppointmentStatus");
+
+            migrationBuilder.DropTable(
+                name: "roles");
+
+            migrationBuilder.DropTable(
+                name: "users");
         }
     }
 }

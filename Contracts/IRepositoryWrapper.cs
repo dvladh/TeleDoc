@@ -8,6 +8,7 @@ namespace Contracts
     {
         IPatientRepository Patient { get; }
         IDoctorRepository Doctor { get;  }
+        IAppointmentRepository Appointment { get; }
         void Save();
         void SaveAsync();
     }

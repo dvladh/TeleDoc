@@ -11,6 +11,7 @@ namespace Repository
         private readonly RepositoryContext _repoContext;
         private IDoctorRepository _doctor;
         private IPatientRepository _patient;
+        private IAppointmentRepository _appointment;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
@@ -43,9 +44,22 @@ namespace Repository
             }
         }
 
+        public IAppointmentRepository Appointment
+        {
+            get
+            {
+                if (_appointment == null)
+                {
+                    _appointment = new AppointmentRepository(_repoContext);
+                }
+
+                return _appointment;
+            }
+        }
+
         public void Save()
         {
-            _repoContext.SaveChanges();
+           _repoContext.SaveChanges();
         }
 
         public void SaveAsync()

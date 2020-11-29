@@ -14,8 +14,89 @@ namespace TeleDocServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Entities.Models.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppointmentStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppointmentStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "Req",
+                            Name = "Request"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "Acc",
+                            Name = "Accept"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "Can",
+                            Name = "Cancel"
+                        });
+                });
 
             modelBuilder.Entity("Entities.Models.Doctor", b =>
                 {
@@ -33,7 +114,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("doctors");
                 });
 
             modelBuilder.Entity("Entities.Models.Patient", b =>
@@ -62,7 +143,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("patients");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -147,7 +228,7 @@ namespace TeleDocServer.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -173,7 +254,23 @@ namespace TeleDocServer.Migrations
                         .IsUnique()
                         .HasName("RoleNameIndex");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "580f11fe-b3ff-41fe-932b-39aaef187b63",
+                            ConcurrencyStamp = "db00deda-b709-44fc-8c23-b9be740c053c",
+                            Name = "Patient",
+                            NormalizedName = "PATIENT"
+                        },
+                        new
+                        {
+                            Id = "c95c1062-1a2a-4ea1-96c2-5291e8590b65",
+                            ConcurrencyStamp = "a88c0be1-9a1e-46b6-9358-318f1a4e0712",
+                            Name = "Doctor",
+                            NormalizedName = "DOCTOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -196,7 +293,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("roleclaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -219,7 +316,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims");
+                    b.ToTable("userclaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -241,7 +338,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins");
+                    b.ToTable("userlogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -256,7 +353,7 @@ namespace TeleDocServer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("userroles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -275,7 +372,24 @@ namespace TeleDocServer.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens");
+                    b.ToTable("usertokens");
+                });
+
+            modelBuilder.Entity("Entities.Models.Appointment", b =>
+                {
+                    b.HasOne("Entities.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("Entities.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("Entities.Models.AppointmentStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Doctor", b =>
